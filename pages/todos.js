@@ -3,13 +3,13 @@ import styled from "styled-components";
 import { Colours, Typography } from "../definitions";
 import Button from "../components/Button";
 import PageLayout from "../components/PageLayout";
-import {
-  clearTodoAlerts,
-  clearTodoBody,
-  updateTodoError,
-  updateTodoName,
-  updateTodoSuccess,
-} from "../actions/todo";
+// import {
+//   clearTodoAlerts,
+//   clearTodoBody,
+//   updateTodoError,
+//   updateTodoName,
+//   updateTodoSuccess,
+// } from "../actions/todo";
 import Form from "../components/Form";
 import InputField from "../components/InputField";
 import apiFetch from "../functions/apiFetch";
@@ -17,69 +17,43 @@ import { useDispatch, useSelector } from "react-redux";
 import Alert from "../components/Alert";
 import { useRouter } from "next/router"; //We already have next/router imported in the _app.js file, so we can use it here.
 
-const Create = () => {
-  const [isFetching, setIsFetching] = useState(false);
-  const [todos, setTodos] = useState([]);
-  const todoState = useSelector((state) => state.todo);
-  const dispatch = useDispatch();
+const Todos = () => {
+  const [isFetching, setIsFetching] = useState(false)
+  const [todos, setTodos] = useState([])
+  const todoState = useSelector((state) => state.todo)
+  const dispatch = useDispatch()
 
-  const router = useRouter();
+  const router = useRouter()
   const handleBack = () => {
     //This function will be called when the back button is clicked.
-    router.back();
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (todoState.body.name) {
-      setIsFetching(true);
-      dispatch(clearTodoAlerts());
-      let response = await apiFetch("/todo", {
-        method: "get",
-      });
-      setIsFetching(false);
-      if (response.status === 201) {
-        dispatch(
-          updateTodoSuccess({
-            success: `Todo "${todoState.body.name}" saved successfully`,
-          })
-        );
-        dispatch(clearTodoBody());
-      } else {
-        dispatch(updateTodoError({ error: response.body.error }));
-      }
-    }
-  };
+    router.back()
+  }
 
   useEffect(() => {
-    console.log("ComponentDidMount");
-    getTodos();
-  }, []); // Run only on mount.
-
-  // Get request for todos.
-  const getTodos = async () => {
-    setIsFetching(true);
-    try {
-      let response = await apiFetch("/todo");
-      setTodos(response.body);
-    } catch (error) {
-      console.error("Failed to fetch todos:", error);
+    const getTodos = async () => {
+      setIsFetching(true)
+      try {
+        let response = await apiFetch('/todo')
+        console.log('Fetched todos:', response.body) // Log the fetched todos
+        setTodos(response.body)
+      } catch (error) {
+        console.error('Failed to fetch todos:', error)
+      }
+      setIsFetching(false)
     }
-    setIsFetching(false);
 
-    console.log(todos[0]);
-  };
+    getTodos()
+  }, [])
 
   // Sorry for the auto formatting...
   return (
-    <PageLayout title="Create todo">
+    <PageLayout title='Create todo'>
       <Container>
-        <div className="content">
+        <div className='content'>
           <Button
-            size="small"
-            text="<"
-            variant="neutral-light"
+            size='small'
+            text='<'
+            variant='neutral-light'
             onClick={handleBack}
           />
           <h1>Todo List</h1>
@@ -90,36 +64,28 @@ const Create = () => {
           <Alert
             message={todoState.alerts.success}
             onClose={() => dispatch(clearTodoAlerts())}
-            variant="success"
+            variant='success'
           />
-          <Form onSubmit={handleSubmit}>
-            <InputField
-              className="input"
-              type="text"
-              placeholder="Todo item name"
-              required
-              value={todoState.body.name}
-              onChange={(e) =>
-                dispatch(updateTodoName({ name: e.target.value }))
-              }
-            />
-            <Button
-              className="saveButton"
-              type="submit"
-              text="Save"
-              size="large"
-              variant="primary"
-              disabled={isFetching || !todoState.body.name}
-              isFullWidth
-            />
-          </Form>
+          {isFetching ? (
+            <p>Loading...</p>
+          ) : (
+            <div>
+              <p>LOADED</p>
+              {todos.length === 0 && <p>{todos[0]}</p>}
+              <ul>
+                {todos.map((todo) => (
+                  <li key={`${todo.id}asd`}>{todo.title}</li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </Container>
     </PageLayout>
-  );
-};
+  )
+}
 
-export default Create;
+export default Todos
 
 const Container = styled.div`
   width: 100%;
