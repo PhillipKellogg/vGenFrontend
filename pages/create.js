@@ -9,12 +9,18 @@ import InputField from '../components/InputField';
 import apiFetch from '../functions/apiFetch';
 import { useDispatch, useSelector } from 'react-redux';
 import Alert from '../components/Alert';
+import { useRouter } from 'next/router'; 
 
 
 const Create = () => {
     const [isSaving, setIsSaving] = useState(false);
     const todoState = useSelector((state) => state.todo);
     const dispatch = useDispatch();
+
+    const router = useRouter(); 
+    const handleBack = () => {
+        router.back(); // Step 3: Define the back navigation function
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -41,6 +47,8 @@ const Create = () => {
         <PageLayout title="Create todo">
             <Container>
                 <div className="content">
+                    <Button size='small' text="<" variant="neutral-light" onClick={handleBack} />
+
                     <h1>Create todo</h1>
                     <Alert message={todoState.alerts.error} onClose={() => dispatch(clearTodoAlerts())} />
                     <Alert message={todoState.alerts.success} onClose={() => dispatch(clearTodoAlerts())} variant="success" />
