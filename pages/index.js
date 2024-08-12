@@ -2,32 +2,46 @@ import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import Button from '../components/Button';
-import PageLayout from '../components/PageLayout';
-import { useRouter } from 'next/router';
-import { redirect } from 'next/navigation'
-// import Create from '../components/create';
+import PageLayout from '../components/PageLayout'
 
 const Index = () => {
-    // const router = useRouter()
-    return (
-        <PageLayout title="Dashboard">
-            <Container>
-                <div className="content">
-                    <Button size='small' text="<" variant="neutral-light" />
-                    <img className="logo" src="/img/todox-logo-black.svg" />
-                    <div className="buttons">
-                        <Link className="noLinkStyling" href="/create">
-                            <Button text="Create new todo" size="large" variant="primary" isFullWidth />
-                        </Link>
-                        <Link className="noLinkStyling" href="/todos">
-                            <Button text="My todos" size="large" variant="primary" isFullWidth />
-                        </Link>
-                    </div>
-                </div>
-            </Container>
-        </PageLayout>
-    );
-};
+  return (
+    <PageLayout title='Dashboard'>
+      <Container>
+        <div className='content'>
+          <img
+            className='logo'
+            src='/img/todox-logo-black.svg'
+          />
+          <div className='buttons'>
+            <Link
+              className='noLinkStyling'
+              href='/create'
+            >
+              <Button
+                text='Create new todo'
+                size='large'
+                variant='primary'
+                isFullWidth
+              />
+            </Link>
+            <Link
+              className='noLinkStyling'
+              href='/todos'
+            >
+              <Button
+                text='My todos'
+                size='large'
+                variant='primary'
+                isFullWidth
+              />
+            </Link>
+          </div>
+        </div>
+      </Container>
+    </PageLayout>
+  )
+}
 
 export default Index;
 
