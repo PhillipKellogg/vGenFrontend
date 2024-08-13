@@ -55,8 +55,10 @@ const Create = () => {
         <div className='content'>
           <Button
             size='small'
-            text='<'
+            text='👈'
+            className='backButton'
             variant='neutral-light'
+            disabled={isSaving}
             onClick={handleBack}
           />
 
@@ -84,7 +86,7 @@ const Create = () => {
             <Button
               className='saveButton'
               type='submit'
-              text='Save'
+              text={isSaving ? 'Saving...' : 'Save'}
               size='large'
               variant='primary'
               disabled={isSaving || !todoState.body.name}
@@ -96,6 +98,7 @@ const Create = () => {
             size='large'
             variant='primary'
             isFullWidth
+            disabled={isSaving}
             onClick={handleTodo}
           />
         </div>
@@ -110,6 +113,10 @@ const Container = styled.div`
   width: 100%;
 
   .content {
+    .backButton {
+      padding-bottom: 0.5rem;
+    }
+
     h1 {
       color: ${Colours.BLACK};
       font-size: ${Typography.HEADING_SIZES.M};
