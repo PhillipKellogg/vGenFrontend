@@ -38,7 +38,7 @@ const Todos = () => {
 
   const handleCreate = () => {
     // Navigate to the create.js page, using this as a function to prevent redirecting during a save.
-    router.push('/create') //This was my first time using next router. I am not a fan of this in comparison to react-router-dom. My fault for not looking to deep into it before I used it.
+    router.push('/create')
   }
 
   useEffect(() => {
@@ -134,7 +134,6 @@ const Todos = () => {
                 <div>
                   <div className='title'>
                     <h1>Todo List</h1>
-                    {/* Wow look at this guy, adding animations, you should hire him */}
                     {allCompleted && (
                       <div className='thumbs-up-animation'>👍</div>
                     )}
